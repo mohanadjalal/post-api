@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\CommentsResource;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends  BaseController
@@ -10,9 +12,9 @@ class CommentController extends  BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Post $post)
     {
-        //
+        return $this->sendResponse(CommentsResource::collection($post->comments()->get()), 'comments list');
     }
 
     /**
@@ -20,7 +22,13 @@ class CommentController extends  BaseController
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'post_id' => "required|numeric",
+            "text" => "required|string",
+        ]);
+        $comment = Comment::create(['text' => $request->text, 'user_id' => auth()->user()->id, 'post_id' => $request->post_id,]);
+
+        return $this->sendResponse(new CommentsResource($comment), 'comment created successfully');
     }
 
     /**
@@ -28,7 +36,7 @@ class CommentController extends  BaseController
      */
     public function show(Comment $comment)
     {
-        //
+        return $this->sendResponse(new CommentsResource($comment), 'comment ');
     }
 
     /**
@@ -36,7 +44,15 @@ class CommentController extends  BaseController
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        if (auth()->user()->id !== $comment->user_id) {
+            return $this->sendError("you are not authorized to do this action ", ['error' => 'not authorized'], 403);
+        }
+        $validated = $request->validate([
+            "text" => "required|string",
+        ]);
+
+        $comment->update($validated);
+        return $this->sendResponse(new CommentsResource($comment), 'comment ');
     }
 
     /**
@@ -44,6 +60,10 @@ class CommentController extends  BaseController
      */
     public function destroy(Comment $comment)
     {
-        //
+        if (auth()->user()->id !== $comment->user_id) {
+            return $this->sendError("you are not authorized to do this action ", ['error' => 'not authorized'], 403);
+        }
+        $comment->delete();
+        return $this->sendResponse(new CommentsResource($comment), 'comment ');;
     }
 }

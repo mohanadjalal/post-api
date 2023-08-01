@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+class CommentsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,17 +15,13 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'body' => $this->body,
+            'text' => $this->text,
             'user_id' => $this->user_id,
-            'created_at'=> Carbon::parse($this->created_at)->format('d-m-Y H:i:s'),
-            'updated_at'=> Carbon::parse($this->updated_at)->format('d-m-Y H:i:s'),
-            
-
-
+            'post_id' => $this->post_id,
+            'created_at' => Carbon::parse($this->created_at)->format('d-m-Y H:i:s'),
+            'updated_at' => Carbon::parse($this->updated_at)->format('d-m-Y H:i:s'),
         ];
     }
 }

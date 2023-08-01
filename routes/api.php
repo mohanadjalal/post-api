@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -27,4 +28,13 @@ Route::post('register' , [UserController::class , 'register']);
         
 Route::middleware('auth:sanctum')->group( function () {
     Route::resource('posts', PostController::class);
+  
+    Route::get('comments/{post}' , [CommentController::class , 'index']);
+    Route::Post('comments' , [CommentController::class , 'store']);
+    Route::get('comments/one/{comment}' , [CommentController::class , 'show']);
+    Route::patch('comments/{comment}' , [CommentController::class , 'update']);
+    Route::delete('comments/{comment}' , [CommentController::class , 'destroy']);
+
+
+
 });

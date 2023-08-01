@@ -25,7 +25,7 @@ class PostController extends BaseController
      */
     public function store(PostRequest $request)
     {
-        $post  = Post::create(['title' => $request->title, 'body' => $request->body, 'userId' => auth()->user()->id]);
+        $post  = Post::create(['title' => $request->title, 'body' => $request->body, 'user_id' => auth()->user()->id]);
         return $this->sendResponse(new PostResource($post), 'Post created successfully!');
     }
 
@@ -42,7 +42,7 @@ class PostController extends BaseController
      */
     public function update(Request $request, Post $post)
     {
-        if (auth()->user()->id !== $post->userId) {
+        if (auth()->user()->id !== $post->user_id) {
             return $this->sendError("you are not authorized to do this action ", ['error' => 'not authorized'], 403);
         }
 
@@ -60,7 +60,7 @@ class PostController extends BaseController
      */
     public function destroy(Post $post)
     {
-        if (auth()->user()->id !== $post->userId) {
+        if (auth()->user()->id !== $post->user_id) {
             return $this->sendError("you are not authorized to do this action ", ['error' => 'not authorized'], 403);
         }
         $post->delete();

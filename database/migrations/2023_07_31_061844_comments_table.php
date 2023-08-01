@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
                 $table->id();
                 $table->longText('text');
-                $table->foreignId('userId') ; 
-                $table->foreignId('postId') ; 
+                $table->foreignId('user_id') ; 
+                $table->foreignId('post_id') ; 
                 $table->timestamps();
-                $table->foreign('userId')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-                $table->foreign('postId')->references('id')->on('posts')->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreign('post_id')->references('id')->on('posts')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
