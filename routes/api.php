@@ -28,6 +28,8 @@ Route::post('register' , [UserController::class , 'register']);
         
 Route::middleware('auth:sanctum')->group( function () {
     Route::resource('posts', PostController::class);
+    
+    Route::get('users/{user}' , [UserController::class  , 'show']);
   
     Route::get('comments/{post}' , [CommentController::class , 'index']);
     Route::Post('comments' , [CommentController::class , 'store']);
