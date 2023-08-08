@@ -20,6 +20,7 @@ class CommentsResource extends JsonResource
             'text' => $this->text,
             'user_id' => $this->user_id,
             'post_id' => $this->post_id,
+            "user" =>  $this->user ,
             'created_at' => Carbon::parse($this->created_at)->format('d-m-Y H:i:s'),
             'updated_at' => Carbon::parse($this->updated_at)->format('d-m-Y H:i:s'),
         ];

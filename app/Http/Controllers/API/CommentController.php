@@ -14,7 +14,8 @@ class CommentController extends  BaseController
      */
     public function index(Post $post)
     {
-        return $this->sendResponse(CommentsResource::collection($post->comments()->get()), 'comments list');
+        $comments = Comment::with(['user'])->where('post_id' , $post->id)->orderBy('created_at' , "desc")->get() ; 
+        return $this->sendResponse(CommentsResource::collection($comments), 'comments list');
     }
 
     /**
