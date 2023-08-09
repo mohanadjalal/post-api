@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,6 @@ class UserController extends BaseController
    }
 
    public function show(Request $request ,User $user )  {
-    return $this->sendResponse($user , 'success' );
+    return $this->sendResponse(new UserResource($user) , 'success' );
    }
 }
